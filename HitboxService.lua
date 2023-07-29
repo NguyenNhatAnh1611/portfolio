@@ -318,3 +318,11 @@ function HitboxService:TouchedHitbox(Root, Blacklist, HitboxSettings, ParryEnabl
 	end)
 end
 return HitboxService
+
+-- 2 types of hitbox: BlockHitbox and RaycastHitbox
+-- They serve the same function, detecting and returning characters, but have different ways of working.
+-- BoxHitbox doesn't require mobilities, such as swinging or whatever. It detects characters in a range of motion, and can easily be changed.
+-- RaycastHitbox is more precise and detects every frame of motion. But in exchange, it requires mobility. For example, if the Player can't load the Animations (because of lag, high ping,...), the Hitbox mostly won't work because there are no motions, however, moving around is a way to get around it..
+-- TouchedHitbox is Raycast Hitbox, but with .Touched event. However, TouchedHitbox is not good for handling stuff, since it can cause unwanted parts to fire the event. Which can result in bad performance.
+-- FindNearestKnocked is a game script, with MagnitudeHitbox built-in, but uses to find Knocked Player (workaround with Gripping, Carrying)
+-- MagnitudeHitbox is to loop through all valid instances, and then detect whether they are in valid range to be hit by the hitbox.
