@@ -20,7 +20,13 @@
 -- [[Live Enemy Check]] - The game have an module script named STATE, which is a table module manager, which ensures each player to have their own State Table attached upon called. STATE:LOADPRESET(Character, Preset) will loop through all the state we need to be checked (are in the preset), and return whether the STATE are valid with the current preset values. Next is to check if they are in a valid folder (workspace.World.Live), and check whether they have a ForceField, and check if they are not knocked.
 -- [[Knocked Enemy Check]] - Just check for Knocked Event inside the Character.
 
--- BlockHitbox uses OverlapParams
+-- BlockHitbox uses OverlapParams: https://create.roblox.com/docs/reference/engine/datatypes/OverlapParams, so it can detect parts in range. Variables (Root, Blacklist, HitboxSettings, ParryEnabled, Callback), first thing, we will create OverlapParams with Whitelist (Include). We will loop through all lives, check if them are valid, and then put the parts in the whitelist table.
+-- HitboxSettings is an table, there are required variables (position and size, duration, interval) 
+-- Optional are Max (Max Parts can be detected), CFrame (aka Hitbox offset from the Root Object), ExceptionalPosition (ignores the Root Object, cast hitbox at the exceptional position), ExceptionalCFrame (Same as Position, but have rotations)
+-- Duration and Interval, the script will get parts in OverlapParams every Interval in given duration, this can be done by using tick(), while loop or os.clock() and while loop.
+-- TouchedHitbox works the same as Raycast, but uses .Touched event instead.
+-- FindNearestKnocked is a game script, with MagnitudeHitbox built-in, but uses to find Knocked Player (workaround with Gripping, Carrying)
+-- MagnitudeHitbox is to loop through all valid instances, and then detect whether they are in valid range to be hit by the hitbox.
 
 --||Services||--
 local Players = game:GetService("Players")
