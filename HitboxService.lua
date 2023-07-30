@@ -1,3 +1,6 @@
+-- [[Credits]] --
+-- Made by OriChanRBLX, serves applying for LUA role in HiddenDevs.
+
 -- [[Overview]] --
 
 -- 2 types of hitbox: BlockHitbox and RaycastHitbox
