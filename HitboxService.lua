@@ -1,3 +1,23 @@
+-- [[Overview]] --
+
+-- 2 types of hitbox: BlockHitbox and RaycastHitbox
+-- They serve the same function, detecting and returning characters, but have different ways of working.
+-- BoxHitbox doesn't require mobilities, such as swinging or whatever. It detects characters in a range of motion, and can easily be changed.
+-- RaycastHitbox is more precise and detects every frame of motion. But in exchange, it requires mobility. For example, if the Player can't load the Animations (because of lag, high ping,...), the Hitbox mostly won't work because there are no motions, however, moving around is a way to get around it..
+-- TouchedHitbox is Raycast Hitbox, but with .Touched event. However, TouchedHitbox is not good for handling stuff, since it can cause unwanted parts to fire the event. Which can result in bad performance.
+-- FindNearestKnocked is a game script, with MagnitudeHitbox built-in, but uses to find Knocked Player (workaround with Gripping, Carrying)
+-- MagnitudeHitbox is to loop through all valid instances, and then detect whether they are in valid range to be hit by the hitbox.
+
+-- [[Functionality]]--
+
+-- The first lines are used to create variables for future uses, they are seperated for a better looking module.
+-- function HitboxService:(FunctionName) is used to create global functions, and put them inside the module table, and then return the table at the end of the script. When it gets required, the table will be returned and you can use the functions inside it as well as use the variables.
+-- RaycastHitbox, uses RaycastHitboxV4: https://devforum.roblox.com/t/raycast-hitbox-401-for-all-your-melee-needs/374482, but with proper uses into the main game runline. First lines are the checks if the variables are valid, we can use pcall if we don't want to check, since pcall won't error any, so the block of script won't work, same when the variables are nil.
+-- Next is to create RaycastParams which is needed when perform workspace:Raycast, we will use the HitPoints to determine where we raycast, and the object will determines whether the hit points will be putted on. They functions the same as attachment, but without preset, without memory leaks.
+-- When they hit an object (Must be a Character in this situation), they will perform an Live Enemy Check.
+
+-- [[Live Enemy Check]] - The game have an module script named STATE, which is a table module manager, which ensures each player to have their own State Table attached upon called. STATE:LOADPRESET(Character, Preset) will loop through all the state we need to be checked (are in the preset), and return whether the STATE are valid with the current preset values. Next is to check if they are in a valid folder (workspace.World.Live), and check whether they have a ForceField
+
 --||Services||--
 local Players = game:GetService("Players")
 
@@ -318,11 +338,3 @@ function HitboxService:TouchedHitbox(Root, Blacklist, HitboxSettings, ParryEnabl
 	end)
 end
 return HitboxService
-
--- 2 types of hitbox: BlockHitbox and RaycastHitbox
--- They serve the same function, detecting and returning characters, but have different ways of working.
--- BoxHitbox doesn't require mobilities, such as swinging or whatever. It detects characters in a range of motion, and can easily be changed.
--- RaycastHitbox is more precise and detects every frame of motion. But in exchange, it requires mobility. For example, if the Player can't load the Animations (because of lag, high ping,...), the Hitbox mostly won't work because there are no motions, however, moving around is a way to get around it..
--- TouchedHitbox is Raycast Hitbox, but with .Touched event. However, TouchedHitbox is not good for handling stuff, since it can cause unwanted parts to fire the event. Which can result in bad performance.
--- FindNearestKnocked is a game script, with MagnitudeHitbox built-in, but uses to find Knocked Player (workaround with Gripping, Carrying)
--- MagnitudeHitbox is to loop through all valid instances, and then detect whether they are in valid range to be hit by the hitbox.
